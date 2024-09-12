@@ -1,0 +1,6 @@
+qq_bot:
+  appid: XXX
+  secret: XXX
+tencent_cloud:
+  secret_id: XXX
+  secret_key: XXX

@@ -70,8 +70,3 @@
 ![turn_on_hunyuan_service.png](docs/images/turn_on_hunyuan_service.png)
 
 其它可参考 [快速入门](https://cloud.tencent.com/document/product/1729/97730#d24be719-0c66-4cd9-93cd-cfc5326995f2)
-
-
-git remote add github https://github.com/HiRyanLee/QQBotDemo.git
-git branch -M main
-git push -u origin main
