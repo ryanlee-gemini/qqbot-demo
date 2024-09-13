@@ -1,13 +1,13 @@
 # QQ机器人服务端（webhook）
-目前QQ机器人webhook事件回调在灰度验证，灰度用户可体验通过页面配置事件监听及回调地址。未灰度到的用户可通过原有websocket方式接入。
+QQ机器人webhook事件回调目前在灰度验证，灰度用户可体验通过页面配置事件监听及回调地址。未灰度到的用户可通过原有websocket方式接入。
 
 机器人体验账号（QQ扫码后可对话）
 
-![QQBotDemo.png](docs/images/qq_bot_demo.png)
+![qq_bot_demo.png](docs/images/qq_bot_demo.png)
 
 ## quick start
-1. 完成[准备工作](#准备工作)
-2. 配置QQ机器人事件监听与回调地址  
+1. 请首先完成[准备工作](#准备工作)
+2. 配置QQ机器人事件监听与回调地址
 
 * 复制云函数地址 + "/qqbot"后缀，填入回调地址输入框。点击确认。
 
@@ -65,7 +65,7 @@
 
 ![create_secret.png](docs/images/create_secret.png)
 
-2. 打开 腾讯混元大模型服务
+2. 打开"腾讯混元大模型服务"
 
 ![turn_on_hunyuan_service.png](docs/images/turn_on_hunyuan_service.png)
 
