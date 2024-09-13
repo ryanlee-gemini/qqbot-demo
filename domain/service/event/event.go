@@ -23,7 +23,8 @@ const (
 	OpTypeDispatchEvent = 0
 	OpTypeValidation    = 13
 
-	C2CMessageCreate = "C2C_MESSAGE_CREATE"
+	C2CMessageCreate     = "C2C_MESSAGE_CREATE"
+	GroupATMessageCreate = "GROUP_AT_MESSAGE_CREATE"
 )
 
 // Payload 回调请求
@@ -83,7 +84,7 @@ func HandleEvent(ctx context.Context, payload *Payload) {
 	//校验签名
 	api := qqbot.GetMessageApiInstance()
 	switch payload.Type {
-	case C2CMessageCreate:
+	case C2CMessageCreate, GroupATMessageCreate:
 		{
 			recMsg := &dto.Message{}
 			err := json.Unmarshal(payload.Data, recMsg)
@@ -91,10 +92,19 @@ func HandleEvent(ctx context.Context, payload *Payload) {
 				log.Println("unmarshal payload.data failed ", err)
 				return
 			}
-			replyMsg := generateDemoMessage(recMsg)
-			_, err = api.SendC2CMessage(ctx, recMsg.Author.ID, replyMsg)
-			if err != nil {
-				log.Println("send c2c msg failed ", err)
+			switch payload.Type {
+			case C2CMessageCreate:
+				replyMsg := generateDemoMessage(recMsg)
+				_, err = api.SendC2CMessage(ctx, recMsg.Author.ID, replyMsg)
+				if err != nil {
+					log.Println("send c2c msg failed ", err)
+				}
+			case GroupATMessageCreate:
+				replyMsg := generateDemoMessage(recMsg)
+				_, err = api.SendGroupMessage(ctx, recMsg.GroupID, replyMsg)
+				if err != nil {
+					log.Println("send group msg failed ", err)
+				}
 			}
 		}
 	default:

@@ -73,8 +73,31 @@ func (o *messageAPI) SendC2CMessage(ctx context.Context, userID string, msg dto.
 		SetBody(msg).
 		Post(o.getURL("/v2/users/{user_id}/messages"))
 	if err != nil {
-		log.Println("send c2c message failed ", err)
+		log.Printf("send c2c message failed, userID: %s, msg: %+v, err: %+v\n", userID, msg, err)
 		return nil, err
 	}
+	log.Printf("send c2c message success, userID: %s, msg: %+v\n", userID, msg)
+	return resp.Result().(*dto.Message), nil
+}
+
+// SendGroupMessage 发送群聊消息
+func (o *messageAPI) SendGroupMessage(ctx context.Context, groupID string, msg dto.APIMessage) (*dto.Message, error) {
+	at, err := qqbot.GetAccessTokenApiInstance().RetrieveAccessToken(ctx, o.appid, o.secret)
+	if err != nil {
+		log.Println("retrieve access token failed ", err)
+		return nil, err
+	}
+	log.Println("send group")
+	resp, err := o.request(ctx).
+		SetResult(&dto.Message{}).
+		SetAuthToken(at.Token).
+		SetPathParam("group_openid", groupID).
+		SetBody(msg).
+		Post(o.getURL("/v2/groups/{group_openid}/messages"))
+	if err != nil {
+		log.Printf("send group message failed, groupID: %s, msg: %+v, err: %+v\n", groupID, msg, err)
+		return nil, err
+	}
+	log.Printf("send group message success, groupID: %s, msg: %+v\n", groupID, msg)
 	return resp.Result().(*dto.Message), nil
 }

@@ -9,6 +9,7 @@ import (
 // MessageAPI ..
 type MessageAPI interface {
 	SendC2CMessage(ctx context.Context, userID string, msg dto.APIMessage) (*dto.Message, error)
+	SendGroupMessage(ctx context.Context, groupID string, msg dto.APIMessage) (*dto.Message, error)
 }
 
 // GetMessageApiInstance ..
