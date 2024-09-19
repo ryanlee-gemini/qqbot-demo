@@ -7,7 +7,13 @@ QQ机器人webhook事件回调目前在灰度验证，灰度用户可体验通�
 
 ## quick start
 1. 请首先完成[准备工作](#准备工作)
-2. 配置QQ机器人事件监听与回调地址
+2. 在config.yaml中配置QQ机器人账号、腾讯云账号
+3. 执行Makefile中build指令
+4. 将config.yaml、scf_bootstrap、qqbot-demo(二进制文件)打包，上传至云函数
+
+![上传压缩包](docs/images/upload_scf_zip.png)
+
+5. 配置QQ机器人事件监听与回调地址
 
 * 复制云函数地址 + "/qqbot"后缀，填入回调地址输入框。点击确认。
 
@@ -16,12 +22,6 @@ QQ机器人webhook事件回调目前在灰度验证，灰度用户可体验通�
 * 勾选 C2C_MESSAGE_CREATE 事件。点击确认。
 
 ![webhook配置](docs/images/webhook_setting.png)
-
-3. 在config.yaml中配置QQ机器人账号、腾讯云账号
-4. 执行Makefile中build指令
-5. 将config.yaml、scf_bootstrap、qqbot-demo(二进制文件)打包，上传至云函数
-
-![上传压缩包](docs/images/upload_scf_zip.png)
 
 6. 体验与QQ机器人的对话
 
