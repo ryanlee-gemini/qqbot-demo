@@ -1,12 +1,20 @@
 module github.com/ryanlee-gemini/qqbot-demo
+
 go 1.21.3
 
 require (
-	github.com/go-resty/resty/v2 v2.6.0
-	github.com/tencent-connect/botgo v0.1.6
-	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.0.999
-	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/hunyuan v1.0.999
-	gopkg.in/yaml.v3 v3.0.0-20200313102051-9f266ea9e77c
+	github.com/openai/openai-go v0.1.0-alpha.26
+	github.com/tencent-connect/botgo v0.1.7
 )
 
-require golang.org/x/net v0.0.0-20210428140749-89ef3d95e781 // indirect
+require (
+	github.com/go-resty/resty/v2 v2.6.0 // indirect
+	github.com/gorilla/websocket v1.4.2 // indirect
+	github.com/tidwall/gjson v1.14.4 // indirect
+	github.com/tidwall/match v1.1.1 // indirect
+	github.com/tidwall/pretty v1.2.1 // indirect
+	github.com/tidwall/sjson v1.2.5 // indirect
+	golang.org/x/net v0.27.0 // indirect
+	golang.org/x/oauth2 v0.23.0 // indirect
+	golang.org/x/sync v0.1.0 // indirect
+)

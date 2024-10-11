@@ -1,59 +1,52 @@
 package openai
 
 import (
+	"context"
 	"log"
 	"sync"
 
+	oa "github.com/openai/openai-go"
+	"github.com/openai/openai-go/option"
 	"github.com/ryanlee-gemini/qqbot-demo/domain/repo/openai"
-	"github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common"
-	"github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common/profile"
-	hy "github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/hunyuan/v20230901"
 )
 
 var (
 	onceInitOpenAI sync.Once
-	instanceOpenAI openai.API
 )
 
 // WireUp 组装
-func WireUp(secretID, secretKey string) {
+func WireUp(apiKey string) {
 	onceInitOpenAI.Do(func() {
-		credential := common.NewCredential(
-			secretID,
-			secretKey,
-		)
-		// 实例化一个client选项，可选的，没有特殊需求可以跳过
-		cpf := profile.NewClientProfile()
-		cpf.HttpProfile.Endpoint = "hunyuan.tencentcloudapi.com"
-		// 实例化要请求产品的client对象,clientProfile是可选的
-		client, _ := hy.NewClient(credential, "", cpf)
-		instanceOpenAI = &hunYuanOpenAPI{client: client}
+		openai.GetInstance = func() openai.API {
+			client := oa.NewClient(
+				option.WithAPIKey(apiKey), // 混元 APIKey
+				option.WithBaseURL("https://api.hunyuan.cloud.tencent.com/v1/"), // 混元 endpoint
+			)
+			return &hunYuanOpenAPI{client}
+		}
 	})
-	openai.GetInstance = func() openai.API {
-		return instanceOpenAI
-	}
+
 }
 
 // hunYuanOpenAPI ..
 type hunYuanOpenAPI struct {
-	client *hy.Client
+	*oa.Client
 }
 
-func (api *hunYuanOpenAPI) ChatCompletions(content string) string {
-	request := hy.NewChatCompletionsRequest()
-	request.Model = common.StringPtr("hunyuan-lite")
-	request.Messages = []*hy.Message{
-		{
-			Role:    common.StringPtr("user"),
-			Content: common.StringPtr(content),
-		},
-	}
+func (api *hunYuanOpenAPI) ChatCompletions(ctx context.Context, sysPrompt string, userPrompt string) string {
+
 	// 返回的resp是一个ChatCompletionsResponse的实例，与请求对象对应
-	response, err := api.client.ChatCompletions(request)
+	response, err := api.Chat.Completions.New(ctx, oa.ChatCompletionNewParams{
+		Messages: oa.F([]oa.ChatCompletionMessageParamUnion{
+			oa.SystemMessage(sysPrompt),
+			oa.UserMessage(userPrompt),
+		}),
+		Model: oa.F("hunyuan-lite"),
+	})
 	if err != nil {
 		log.Println("ChatCompletions failed: ", err)
 		return err.Error()
 	}
-	log.Println("chat completion rsp ", *response.Response.Choices[0].Message.Content)
-	return *response.Response.Choices[0].Message.Content
+	log.Println("chat completion rsp ", response.Choices[0].Message.Content)
+	return response.Choices[0].Message.Content
 }
